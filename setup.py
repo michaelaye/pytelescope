@@ -28,7 +28,7 @@ test_requirements = [
 setup(
     name='pytelescope',
     version='0.1.0',
-    description="Package to support pdesign and operation of space mission telescopes",
+    description="Package to support design and operation of space mission telescopes",
     long_description=readme + '\n\n' + history,
     author="K.-Michael Aye",
     author_email='kmichael.aye@gmail.com',
