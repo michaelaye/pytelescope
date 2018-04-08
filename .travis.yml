@@ -23,5 +23,5 @@ deploy:
 language: python
 python:
 - 3.6
-script: python setup.py test
+script: pytest
 install: pip install -e .
