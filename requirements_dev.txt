@@ -8,3 +8,5 @@ Sphinx
 cryptography
 PyYAML
 pytest
+spiceypy
+astropy
