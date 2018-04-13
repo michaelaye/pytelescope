@@ -4,7 +4,6 @@
 """Tests for `pytelescope` package."""
 
 import pytest
-from astropy import units as u
 
 from pytelescope import orbiter
 
@@ -21,7 +20,7 @@ def response():
 
 @pytest.fixture()
 def mars_orbiter():
-    orb = orbiter.MarsOrbiter(350 * u.km)
+    orb = orbiter.MarsOrbiter(350)
     return orb
 
 
