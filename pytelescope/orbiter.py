@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
-"""Main module."""
+"""Orbiter module to put telescope on."""
 
-from astropy import constants as const
-import numpy as np
 import math
-from planetpy.constants import mars, earth
+
+import numpy as np
+import spiceypy as spice
+from astropy import constants as const
 from astropy import units as u
+
+from spicer.kernels import load_generic_kernels
+
+load_generic_kernels()
 
 
 class Orbiter:
@@ -14,27 +19,39 @@ class Orbiter:
 
     Parameters
     ----------
-    M : astropy.units.[mass]
-        Mass of central body
-    R : astropy.units.[length]
-        Radius of circular orbit around body with mass M
+    body : str
+        SPICE Body name (like earth, mars etc.)
 
     Attributes
     ----------
-    G : astropy.constansts.G
-        Gravitational constant
+    GM : Product of G and M of body
+        Rread from SPICE
+    GM_unit : astropy.unit
     """
-    G = const.G
+    GM_unit = (u.km) ** 3 / (u.s) ** 2
 
-    def __init__(self, M, R):
-        self.M = M
-        self.R = R
-        self.alt = R - self.R_body
+    def __init__(self, body, alt):
+        self.body = body
+        self.alt = alt
+
+    @property
+    def GM(self):
+        return spice.bodvrd(self.body, "GM", 1)[1][0] * self.GM_unit
+
+    @property
+    def R_body(self):
+        "Using mean radius here!"
+        radii = spice.bodvrd(self.body, "RADII", 3)[1]
+        return radii.mean()*u.km
+
+    @property
+    def R(self):
+        return self.R_body + self.alt
 
     @property
     def v(self):
         "Return orbital velocity."
-        return np.sqrt(self.G * self.M / self.R).decompose()
+        return np.sqrt(self.GM / self.R).decompose()
 
     @property
     def surface_circumference(self):
@@ -73,26 +90,19 @@ class MarsOrbiter(Orbiter):
     Parameters
     ----------
     alt : astropy.unit.length[km, m, etc]
-        Value for Orbital altitude above ground.
-
-    Attributes
-    ----------
-    M : astropy.units.mass
-        Mass of Mars
-    R_body : astropy.units.length
-        Radius of Mars
+        Value for Orbital height above ground (=altitude).
     """
-    M = mars.mass * 1e24 * u.kg
-    R_body = mars.diameter / 2 * u.km
 
     def __init__(self, alt):
-        super().__init__(self.M, self.R_body + alt)
+        if not isinstance(alt, u.quantity.Quantity):
+            print("Assuming kilometers as unit for input parameter.")
+            alt = alt * u.km
+        super().__init__('MARS', alt)
 
 
 class EarthOrbiter(Orbiter):
-
-    M = earth.mass * 1e24 * u.kg
-    R_body = earth.diameter / 2 * u.km
-
-    def __init__(self, d):
-        super().__init__(self.M, self.R_body + d)
+    def __init__(self, alt):
+        if not isinstance(alt, u.quantity.Quantity):
+            print("Assuming kilometers as unit for input parameter.")
+            alt = alt * u.km
+        super().__init__('EARTH', alt)
