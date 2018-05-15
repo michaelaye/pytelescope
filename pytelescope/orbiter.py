@@ -75,7 +75,7 @@ class Orbiter:
 
     def ground_travel(self, t):
         "Return footprint travel distance in time `t`."
-        return self.v_surf * t
+        return (self.v_surf * t).decompose()
 
     @property
     def slew_rate(self):
@@ -98,6 +98,22 @@ class MarsOrbiter(Orbiter):
             print("Assuming kilometers as unit for input parameter.")
             alt = alt * u.km
         super().__init__('MARS', alt)
+
+
+class VenusOrbiter(Orbiter):
+    """Specialized Orbiter class for Mars.
+
+    Parameters
+    ----------
+    alt : astropy.unit.length[km, m, etc]
+        Value for Orbital height above ground (=altitude).
+    """
+
+    def __init__(self, alt):
+        if not isinstance(alt, u.quantity.Quantity):
+            print("Assuming kilometers as unit for input parameter.")
+            alt = alt * u.km
+        super().__init__('VENUS', alt)
 
 
 class EarthOrbiter(Orbiter):
