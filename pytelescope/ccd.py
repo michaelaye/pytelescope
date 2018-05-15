@@ -1,8 +1,11 @@
+from astropy import units as u
+
+
 class CCD(object):
     def __init__(self, x=2048, y=2048, bits=15):
         self.x = x
         self.y = y
-        self.bits_per_pixel = bits
+        self.dynamic_range = bits * u.bit
 
     @property
     def n_pixels(self):
@@ -10,17 +13,17 @@ class CCD(object):
 
     @property
     def total_bits(self):
-        return self.n_pixels * self.bits_per_pixel
+        return self.n_pixels * self.dynamic_range
 
     @property
     def total_mbits(self):
-        return self.total_bits / (1024 * 1024)
+        return self.total_bits.to(u.Mbit)
 
     def __repr__(self):
-        s = "{} x {} pixels per CCD\n".format(self.x, self.y)
-        s += "N pixels: {}\n".format(self.n_pixels)
-        s += "Dynamic range: {} bits\n".format(self.bits_per_pixel)
-        s += "Total Mbits per CCD: {}\n".format(self.total_mbits)
+        s = f"{self.x} x {self.y}\n"
+        s += f"N pixels: {self.n_pixels}\n"
+        s += f"Dynamic range: {self.dynamic_range}\n"
+        s += f"Total Mbits per CCD: {self.total_mbits:.1f}\n"
         return s
 
     def __str__(self):
