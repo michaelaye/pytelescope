@@ -12,6 +12,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'astropy',
+    'scipy',
+    'pyspectral'
     # TODO: put package requirements here
 ]
 
@@ -22,6 +25,7 @@ setup_requirements = [
 
 test_requirements = [
     'pytest',
+    'nbval'
     # TODO: put package test requirements here
 ]
 
