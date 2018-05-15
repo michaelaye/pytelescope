@@ -21,6 +21,7 @@ deploy:
     repo: michaelaye/pytelescope
     tags: true
 language: python
+cache: pip
 python:
   - 3.6
 install:
