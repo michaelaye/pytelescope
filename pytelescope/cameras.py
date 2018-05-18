@@ -40,6 +40,9 @@ class Camera(object):
         return s
 
 
+class VMC(Camera):
+
+
 class SolarIrradiance:
     def __init__(self, wave1=200 * u.nm, wave2=1200 * u.nm, dlambda=1 * u.nm):
         self.wave1 = wave1

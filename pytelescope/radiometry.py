@@ -20,6 +20,9 @@ dic = {
 }
 
 
+class Response:
+
+
 class Radiometry:
     E_w_unit_in = u.Watt/u.m/u.m/u.micron
     E_w_unit_out = u.Watt/u.m/u.m/u.nm
