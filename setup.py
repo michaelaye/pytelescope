@@ -39,6 +39,9 @@ setup(
     url='https://github.com/michaelaye/pytelescope',
     packages=find_packages(include=['pytelescope']),
     include_package_data=True,
+    package_data={
+        'pytelescope': ['data/*']
+    },
     install_requires=requirements,
     license="ISC license",
     zip_safe=False,
