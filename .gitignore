@@ -62,3 +62,4 @@ target/
 .python-version
 .vscode/**
 notebooks/.ipynb_checkpoints/**
+**/*.DS_Store
