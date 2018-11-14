@@ -61,5 +61,6 @@ target/
 # pyenv python configuration file
 .python-version
 .vscode/**
-notebooks/.ipynb_checkpoints/**
+**/*.ipynb_checkpoints
 **/*.DS_Store
+tests/.ipynb_checkpoints/test_astropy_tables-checkpoint.ipynb
